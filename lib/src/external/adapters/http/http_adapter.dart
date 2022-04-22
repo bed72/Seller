@@ -1,20 +1,31 @@
 import 'dart:convert';
 
-import 'package:http/http.dart';
-
-import 'package:seller/src/domain/helpers/http_helper.dart';
+import 'package:dio/dio.dart';
 
 import 'package:seller/src/data/clients/http/http_client.dart';
 
-import 'package:seller/src/external/interceptors/http_interceptor.dart';
+import 'package:seller/src/external/interceptors/auth_interceptor.dart';
+
+import 'package:seller/src/domain/helpers/http_helper.dart';
+import 'package:seller/src/domain/usecases/storage/storage_usecase.dart';
+
+import 'package:seller/src/presentation/utils/constants/app_constant.dart';
 
 class HttpAdapter implements HttpClient {
-  late final HttpInterceptor _http;
+  late final Dio _http;
+  late final StorageUsecase _storageUseCase;
 
-  final int serverError = 500;
-  final Duration timeout = const Duration(seconds: 400);
+  HttpAdapter(
+    this._http,
+    this._storageUseCase,
+  ) {
+    registerInterceptors();
+  }
 
-  HttpAdapter(this._http);
+  @override
+  void registerInterceptors() {
+    _http.interceptors.add(AuthInterceptor(_storageUseCase));
+  }
 
   @override
   Future<Map<String, dynamic>> call({
@@ -23,9 +34,15 @@ class HttpAdapter implements HttpClient {
     Map<String, dynamic>? body,
     Map<String, String>? headers,
   }) async {
-    var _response = Response('', serverError);
-
     Future<Response>? _futureResponse;
+    Response<dynamic> _response = Response(
+      requestOptions: RequestOptions(
+        path: url,
+        sendTimeout: 6,
+        headers: _buildHeaders(headers),
+        responseType: ResponseType.json,
+      ),
+    );
 
     final _jsonBody = _buildBody(body);
     final _defaultHeaders = _buildHeaders(headers);
@@ -34,41 +51,51 @@ class HttpAdapter implements HttpClient {
       switch (method) {
         case HttpMethod.post:
           _futureResponse = _http.post(
-            Uri.parse(url),
-            body: _jsonBody,
-            headers: _defaultHeaders,
+            url,
+            data: _jsonBody,
+            options: Options(
+              headers: _defaultHeaders,
+            ),
           );
           break;
         case HttpMethod.get:
           _futureResponse = _http.get(
-            Uri.parse(url),
-            headers: _defaultHeaders,
+            url,
+            options: Options(
+              headers: _defaultHeaders,
+            ),
           );
           break;
         case HttpMethod.put:
           _futureResponse = _http.put(
-            Uri.parse(url),
-            body: _jsonBody,
-            headers: _defaultHeaders,
+            url,
+            data: _jsonBody,
+            options: Options(
+              headers: _defaultHeaders,
+            ),
           );
           break;
         case HttpMethod.patch:
           _futureResponse = _http.patch(
-            Uri.parse(url),
-            body: _jsonBody,
-            headers: _defaultHeaders,
+            url,
+            data: _jsonBody,
+            options: Options(
+              headers: _defaultHeaders,
+            ),
           );
           break;
         case HttpMethod.delete:
           _futureResponse = _http.delete(
-            Uri.parse(url),
-            headers: _defaultHeaders,
+            url,
+            options: Options(
+              headers: _defaultHeaders,
+            ),
           );
           break;
       }
 
-      _response = await _futureResponse.timeout(timeout);
-    } catch (error) {
+      _response = await _futureResponse;
+    } catch (_) {
       throw HttpResponse.serverError;
     }
 
@@ -83,16 +110,15 @@ class HttpAdapter implements HttpClient {
         ..addAll({
           'accept': 'application/json',
           'content-type': 'application/json',
+          'apikey': AppContants.apikeyAnon,
         });
 
-  Map<String, dynamic> _buildResponse(Response response) {
+  Map<String, dynamic> _buildResponse(Response<dynamic> response) {
     switch (response.statusCode) {
       case 200:
-        return response.body.isEmpty
-            ? {} as Map<String, dynamic>
-            : jsonDecode(response.body);
+        return response.data.isEmpty ? {} : response.data;
       case 204:
-        return {} as Map<String, dynamic>;
+        return {};
       case 400:
         throw HttpResponse.badRequest;
       case 401:

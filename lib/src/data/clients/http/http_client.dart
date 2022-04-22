@@ -7,4 +7,6 @@ abstract class HttpClient {
     Map<String, dynamic>? body,
     Map<String, String>? headers,
   });
+
+  void registerInterceptors();
 }

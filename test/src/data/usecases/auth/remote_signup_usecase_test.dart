@@ -25,6 +25,7 @@ void main() {
       remoteSignUpUseCase = RemoteSignUpUseCase(httpClient);
     });
 
+    // ignore: unused_element
     void _setHttpMethod({HttpMethod method = HttpMethod.post}) {
       httpClient = HttpClientSpy(method: method)..mockRequest(apiResult);
       remoteSignUpUseCase = RemoteSignUpUseCase(httpClient);
