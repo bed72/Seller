@@ -1,27 +1,28 @@
 import 'dart:async';
 
-import 'package:flutter/material.dart';
-
-import 'package:get_it/get_it.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:provider/provider.dart';
 
 import 'src/app.dart';
 
-import 'package:seller/src/external/di/service_locator.dart';
+import 'package:flutter/material.dart';
+
+import 'package:seller/src/modules/storage/external/singletons/storage_singleton.dart';
 
 Future<void> main() async {
-  _initializedServiceLocator();
+  await _initializedSharedPreferences();
 
   await runZonedGuarded<Future<void>>(
-    () async => GetIt.instance.isReady<SharedPreferences>().then((_) {
+    () async {
+      Provider.debugCheckInvalidValueType = null;
+
       runApp(const App());
-    }),
+    },
     (_, __) {},
   );
 }
 
-void _initializedServiceLocator() {
+Future<void> _initializedSharedPreferences() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  ServiceLocator.initializedInjectDependencies();
+  await StorageSingleton.instance.init();
 }
