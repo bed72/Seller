@@ -12,7 +12,7 @@ class RemoteStorageUsecase implements StorageUsecase {
   Future<String> get({required String key}) async {
     try {
       return await _storageClient.get(key);
-    } catch (error) {
+    } catch (_) {
       throw StorageError.unexpected;
     }
   }
@@ -21,7 +21,7 @@ class RemoteStorageUsecase implements StorageUsecase {
   Future<void> save({required String key, required String value}) async {
     try {
       await _storageClient.save(key: key, value: value);
-    } catch (error) {
+    } catch (_) {
       throw StorageError.unexpected;
     }
   }
@@ -30,7 +30,7 @@ class RemoteStorageUsecase implements StorageUsecase {
   Future<void> delete({required String key}) async {
     try {
       await _storageClient.delete(key);
-    } catch (error) {
+    } catch (_) {
       throw StorageError.unexpected;
     }
   }
@@ -39,7 +39,7 @@ class RemoteStorageUsecase implements StorageUsecase {
   Future<void> clear() async {
     try {
       await _storageClient.clear();
-    } catch (error) {
+    } catch (_) {
       throw StorageError.unexpected;
     }
   }

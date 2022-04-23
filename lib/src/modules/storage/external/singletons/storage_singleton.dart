@@ -8,11 +8,9 @@ class StorageSingleton {
   static final StorageSingleton _instance = StorageSingleton._();
   static StorageSingleton get instance => _instance;
 
-  factory StorageSingleton() {
-    return _instance;
-  }
+  factory StorageSingleton() => _instance;
 
-  Future<void> init() async {
+  Future<void> initialized() async {
     _preferences = await SharedPreferences.getInstance();
   }
 

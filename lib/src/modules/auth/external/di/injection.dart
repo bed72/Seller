@@ -5,6 +5,8 @@ import 'package:seller/src/modules/http/data/clients/http_client.dart';
 import 'package:seller/src/modules/auth/domain/usecases/me/me_usecase.dart';
 import 'package:seller/src/modules/auth/domain/usecases/signup/signup_usecase.dart';
 
+import 'package:seller/src/modules/firabase/domain/usecases/crashlytics_usecase.dart';
+
 import 'package:seller/src/modules/auth/data/usecases/me/remote_me_usecase.dart';
 import 'package:seller/src/modules/auth/data/usecases/signup/remote_signup_usecase.dart';
 
@@ -34,6 +36,7 @@ final authModule = [
   Provider<MeLogic>(
     create: (context) => MeLogic(
       context.read<MeUseCase>(),
+      context.read<CrashlyticsUseCase>(),
     ),
   ),
 ];

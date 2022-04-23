@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "161515463548",
+    "project_id": "go-sale-seller",
+    "storage_bucket": "go-sale-seller.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:161515463548:android:8a54638590625baa09baf9",
+        "android_client_info": {
+          "package_name": "com.gosale.seller"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "161515463548-h1mofv6giu04g9nj0se34qp3vk3hsjbg.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyARHEop4O2IHX_qm5Kp3-1Hy3CF6Cp5g40"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "161515463548-h1mofv6giu04g9nj0se34qp3vk3hsjbg.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
