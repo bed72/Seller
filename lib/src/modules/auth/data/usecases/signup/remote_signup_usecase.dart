@@ -1,5 +1,10 @@
 import 'package:seller/src/modules/http/data/clients/http_client.dart';
+
 import 'package:seller/src/modules/http/domain/helpers/http_helper.dart';
+
+import 'package:seller/src/core/domain/entities/either/left_entity.dart';
+import 'package:seller/src/core/domain/entities/either/right_entity.dart';
+import 'package:seller/src/core/domain/entities/either/either_entity.dart';
 
 import 'package:seller/src/modules/auth/data/models/signup/signup_model.dart';
 
@@ -12,7 +17,7 @@ class RemoteSignUpUseCase extends SignUpUseCase {
   RemoteSignUpUseCase(this._call);
 
   @override
-  Future<SignUpEntity> call(SignUpParams params) async {
+  Future<Either<HttpResponse, SignUpEntity>> call(SignUpParams params) async {
     try {
       final _response = await _call(
         url: params.url,
@@ -20,9 +25,9 @@ class RemoteSignUpUseCase extends SignUpUseCase {
         method: params.httpMethod,
       );
 
-      return SignUpModel.fromJson(_response);
-    } on HttpResponse catch (_) {
-      rethrow;
+      return Right(SignUpModel.fromJson(_response.right));
+    } on HttpResponse catch (error) {
+      return Left(error);
     }
   }
 }

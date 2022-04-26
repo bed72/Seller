@@ -4,6 +4,12 @@ import 'package:dio/dio.dart';
 
 import 'package:seller/src/utils/constants/app_constant.dart';
 
+import 'package:seller/src/core/domain/entities/exception/exception.dart';
+
+import 'package:seller/src/core/domain/entities/either/left_entity.dart';
+import 'package:seller/src/core/domain/entities/either/right_entity.dart';
+import 'package:seller/src/core/domain/entities/either/either_entity.dart';
+
 import 'package:seller/src/modules/storage/domain/usecases/storage_usecase.dart';
 
 import 'package:seller/src/modules/http/data/clients/http_client.dart';
@@ -27,7 +33,7 @@ class HttpAdapter implements HttpClient {
   }
 
   @override
-  Future<Map<String, dynamic>> call({
+  Future<Either<HandleException, Map<String, dynamic>>> call({
     required String url,
     required HttpMethod method,
     Map<String, dynamic>? body,
@@ -52,54 +58,53 @@ class HttpAdapter implements HttpClient {
           _futureResponse = _http.post(
             url,
             data: _jsonBody,
-            options: Options(
-              headers: _defaultHeaders,
-            ),
+            options: Options(headers: _defaultHeaders),
           );
           break;
         case HttpMethod.get:
           _futureResponse = _http.get(
             url,
-            options: Options(
-              headers: _defaultHeaders,
-            ),
+            options: Options(headers: _defaultHeaders),
           );
           break;
         case HttpMethod.put:
           _futureResponse = _http.put(
             url,
             data: _jsonBody,
-            options: Options(
-              headers: _defaultHeaders,
-            ),
+            options: Options(headers: _defaultHeaders),
           );
           break;
         case HttpMethod.patch:
           _futureResponse = _http.patch(
             url,
             data: _jsonBody,
-            options: Options(
-              headers: _defaultHeaders,
-            ),
+            options: Options(headers: _defaultHeaders),
           );
           break;
         case HttpMethod.delete:
           _futureResponse = _http.delete(
             url,
-            options: Options(
-              headers: _defaultHeaders,
-            ),
+            options: Options(headers: _defaultHeaders),
           );
           break;
       }
 
       _response = await _futureResponse;
-    } catch (_) {
-      throw HttpResponse.serverError;
+    } catch (error) {
+      return Left(
+        ServerException(
+          message: error.toString(),
+          code: HttpResponse.serverError,
+        ),
+      );
     }
 
     return _buildResponse(_response);
   }
+
+  Map<String, String> _buildEmptyBody() => {
+        'response': 'ok',
+      };
 
   String? _buildBody(Map<String, dynamic>? body) =>
       body != null ? jsonEncode(body) : null;
@@ -112,22 +117,50 @@ class HttpAdapter implements HttpClient {
           'apikey': AppContants.apikeyAnon,
         });
 
-  Map<String, dynamic> _buildResponse(Response<dynamic> response) {
+  Either<HandleException, Map<String, dynamic>> _buildResponse(
+      Response<dynamic> response) {
     switch (response.statusCode) {
       case 200:
-        return response.data.isEmpty ? {} : response.data;
+        return response.data.isEmpty
+            ? Right(_buildEmptyBody())
+            : Right(response.data);
       case 204:
-        return {};
+        return Right(_buildEmptyBody());
       case 400:
-        throw HttpResponse.badRequest;
+        return Left(
+          ServerException(
+            message: '',
+            code: HttpResponse.badRequest,
+          ),
+        );
       case 401:
-        throw HttpResponse.unauthorized;
+        return Left(
+          ServerException(
+            message: '',
+            code: HttpResponse.unauthorized,
+          ),
+        );
       case 403:
-        throw HttpResponse.forbidden;
+        return Left(
+          ServerException(
+            message: '',
+            code: HttpResponse.forbidden,
+          ),
+        );
       case 404:
-        throw HttpResponse.notFound;
+        return Left(
+          ServerException(
+            message: '',
+            code: HttpResponse.notFound,
+          ),
+        );
       default:
-        throw HttpResponse.serverError;
+        return Left(
+          ServerException(
+            message: '',
+            code: HttpResponse.serverError,
+          ),
+        );
     }
   }
 }

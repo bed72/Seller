@@ -19,7 +19,7 @@ class RemoteMeUseCase extends MeUseCase {
         method: HttpMethod.get,
       );
 
-      return MeModel.fromJson(_response);
+      return MeModel.fromJson(_response.right);
     } on HttpResponse catch (_) {
       rethrow;
     }
