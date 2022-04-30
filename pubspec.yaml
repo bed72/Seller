@@ -21,6 +21,10 @@ dependencies:
   connectivity_plus: ^2.3.0
   shared_preferences: ^2.0.13
 
+  bloc: ^8.0.3
+  flutter_bloc: ^8.0.1
+  bloc_concurrency: ^0.2.0
+
   firebase_core: ^1.15.0
   firebase_analytics: ^9.1.6
   firebase_crashlytics: ^2.6.3
@@ -31,8 +35,9 @@ dev_dependencies:
     sdk: flutter
 
   mocktail: ^0.3.0
-  
+  bloc_test: ^9.0.3
   flutter_lints: ^1.0.0
+
 
 flutter:
   uses-material-design: true

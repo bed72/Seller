@@ -1,15 +1,14 @@
 import 'package:flutter/material.dart';
-
-import 'package:provider/provider.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:seller/src/utils/constants/app_constant.dart';
 
 import 'package:seller/src/modules/http/domain/helpers/http_helper.dart';
 
 import 'package:seller/src/modules/auth/domain/usecases/signup/signup_usecase.dart';
-
 import 'package:seller/src/modules/auth/presentation/screens/auth/me/me_screen.dart';
-import 'package:seller/src/modules/auth/presentation/screens/auth/signup/states/signup_logic.dart';
+
+import 'package:seller/src/modules/auth/presentation/screens/auth/signup/bloc/signup_bloc.dart';
 
 class SignUpScreen extends StatelessWidget {
   static const String path = '/sign_in';
@@ -27,12 +26,23 @@ class SignUpScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final _logic = context.read<SignUpLogic>();
+    final _bloc = context.watch<SignupBloc>();
 
     return Scaffold(
-      body: ValueListenableBuilder(
-        valueListenable: _logic,
-        builder: (contex, state, __) {
+      body: BlocBuilder(
+        bloc: _bloc,
+        buildWhen: (_, SignUpState state) {
+          if (state is SignUpSuccessState) {
+            Navigator.pushNamedAndRemoveUntil(
+              context,
+              MeScreen.path,
+              (Route<dynamic> route) => false,
+            );
+          }
+
+          return true;
+        },
+        builder: (BuildContext contex, SignUpState state) {
           if (state is SignUpLoadingState) {
             return const Center(
               child: CircularProgressIndicator.adaptive(),
@@ -45,6 +55,12 @@ class SignUpScreen extends StatelessWidget {
             );
           }
 
+          if (state is SignUpSuccessState) {
+            return const Center(
+              child: Text('Success'),
+            );
+          }
+
           return Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -52,8 +68,8 @@ class SignUpScreen extends StatelessWidget {
               children: <Widget>[
                 const Text('Sign UP'),
                 TextButton(
-                  onPressed: () async {
-                    await _logic.signUp(MeScreen.path, params, contex);
+                  onPressed: () {
+                    _bloc.add(SignUpAwnerEvent(params));
                   },
                   child: const Text('Enter'),
                 ),

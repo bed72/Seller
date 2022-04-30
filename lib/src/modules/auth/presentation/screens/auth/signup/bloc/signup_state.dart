@@ -1,4 +1,4 @@
-part of 'signup_logic.dart';
+part of 'signup_bloc.dart';
 
 @immutable
 abstract class SignUpState extends Equatable {

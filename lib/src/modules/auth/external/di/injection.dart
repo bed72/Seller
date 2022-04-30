@@ -11,7 +11,7 @@ import 'package:seller/src/modules/auth/data/usecases/me/remote_me_usecase.dart'
 import 'package:seller/src/modules/auth/data/usecases/signup/remote_signup_usecase.dart';
 
 import 'package:seller/src/modules/auth/presentation/screens/auth/me/states/me_logic.dart';
-import 'package:seller/src/modules/auth/presentation/screens/auth/signup/states/signup_logic.dart';
+import 'package:seller/src/modules/auth/presentation/screens/auth/signup/bloc/signup_bloc.dart';
 
 final authModule = [
   /// SignUp
@@ -20,8 +20,9 @@ final authModule = [
       context.read<HttpClient>(),
     ),
   ),
-  Provider<SignUpLogic>(
-    create: (context) => SignUpLogic(
+
+  Provider<SignupBloc>(
+    create: (context) => SignupBloc(
       context.read<SignUpUseCase>(),
       context.read<CrashlyticsUseCase>(),
     ),
