@@ -24,59 +24,56 @@ class SignUpScreen extends StatelessWidget {
     Key? key,
   }) : super(key: key);
 
+  void _navigateTo(String path, BuildContext context) {
+    Navigator.pushNamedAndRemoveUntil(
+      context,
+      path,
+      (Route<dynamic> route) => false,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final _bloc = context.watch<SignupBloc>();
 
     return Scaffold(
-      body: BlocBuilder(
+      body: BlocListener<SignupBloc, SignUpState>(
         bloc: _bloc,
-        buildWhen: (_, SignUpState state) {
-          if (state is SignUpSuccessState) {
-            Navigator.pushNamedAndRemoveUntil(
-              context,
-              MeScreen.path,
-              (Route<dynamic> route) => false,
-            );
-          }
-
-          return true;
+        listener: (_, SignUpState state) {
+          if (state is SignUpSuccessState) _navigateTo(MeScreen.path, context);
         },
-        builder: (BuildContext contex, SignUpState state) {
-          if (state is SignUpLoadingState) {
-            return const Center(
-              child: CircularProgressIndicator.adaptive(),
-            );
-          }
+        child: BlocBuilder<SignupBloc, SignUpState>(
+          bloc: _bloc,
+          builder: (_, SignUpState state) {
+            if (state is SignUpLoadingState) {
+              return const Center(
+                child: CircularProgressIndicator.adaptive(),
+              );
+            }
 
-          if (state is SignUpFailureState) {
+            if (state is SignUpFailureState) {
+              return Center(
+                child: Text(state.message),
+              );
+            }
+
             return Center(
-              child: Text(state.message),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                  const Text('Sign UP'),
+                  TextButton(
+                    onPressed: () {
+                      _bloc.add(SignUpAwnerEvent(params));
+                    },
+                    child: const Text('Enter'),
+                  ),
+                ],
+              ),
             );
-          }
-
-          if (state is SignUpSuccessState) {
-            return const Center(
-              child: Text('Success'),
-            );
-          }
-
-          return Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: <Widget>[
-                const Text('Sign UP'),
-                TextButton(
-                  onPressed: () {
-                    _bloc.add(SignUpAwnerEvent(params));
-                  },
-                  child: const Text('Enter'),
-                ),
-              ],
-            ),
-          );
-        },
+          },
+        ),
       ),
     );
   }
