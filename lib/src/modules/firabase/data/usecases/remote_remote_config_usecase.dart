@@ -1,5 +1,7 @@
+import 'package:seller/src/core/domain/entities/exception/exception.dart';
+import 'package:seller/src/core/domain/entities/either/either_entity.dart';
+
 import 'package:seller/src/modules/firabase/data/clients/remote_config_client.dart';
-import 'package:seller/src/modules/firabase/domain/helpers/remote_config_helper.dart';
 import 'package:seller/src/modules/firabase/domain/usecases/remote_config_usecase.dart';
 
 class RemoteRemoteConfigUseCase implements RemoteConfigUseCase {
@@ -8,56 +10,41 @@ class RemoteRemoteConfigUseCase implements RemoteConfigUseCase {
   RemoteRemoteConfigUseCase(this._remoteConfigClient);
 
   @override
-  Future<void> forceRefresh() async {
-    try {
+  Future<Either<RemoteConfigException, bool>> forceRefresh() async =>
       await _remoteConfigClient.forceRefresh();
-    } catch (_) {
-      throw RemoteConfigError.force;
-    }
-  }
 
   @override
-  int getInt({required String key, required defaultValue}) {
-    try {
-      return _remoteConfigClient.getInt(key, defaultValue);
-    } catch (_) {
-      throw RemoteConfigError.intValue;
-    }
-  }
+  Either<RemoteConfigException, int> getInt({
+    required String key,
+    required defaultValue,
+  }) =>
+      _remoteConfigClient.getInt(key, defaultValue);
 
   @override
-  bool getBool({required String key, required defaultValue}) {
-    try {
-      return _remoteConfigClient.getBool(key, defaultValue);
-    } catch (_) {
-      throw RemoteConfigError.boolValue;
-    }
-  }
+  Either<RemoteConfigException, bool> getBool({
+    required String key,
+    required defaultValue,
+  }) =>
+      _remoteConfigClient.getBool(key, defaultValue);
 
   @override
-  String getString({required String key, required defaultValue}) {
-    try {
-      return _remoteConfigClient.getString(key, defaultValue);
-    } catch (_) {
-      throw RemoteConfigError.stringValue;
-    }
-  }
+  Either<RemoteConfigException, String> getString({
+    required String key,
+    required defaultValue,
+  }) =>
+      _remoteConfigClient.getString(key, defaultValue);
 
   @override
-  double getDouble({required String key, required defaultValue}) {
-    try {
-      return _remoteConfigClient.getDouble(key, defaultValue);
-    } catch (_) {
-      throw RemoteConfigError.doubleValue;
-    }
-  }
+  Either<RemoteConfigException, double> getDouble({
+    required String key,
+    required defaultValue,
+  }) =>
+      _remoteConfigClient.getDouble(key, defaultValue);
 
   @override
-  getValue({required String key, required defaultValue}) {
-    try {
-      return _remoteConfigClient.getValue(key, defaultValue);
-    } catch (_) {
-      throw RemoteConfigError.dynamicValue;
-    }
-  }
+  Either<RemoteConfigException, dynamic> getValue({
+    required String key,
+    required defaultValue,
+  }) =>
+      _remoteConfigClient.getValue(key, defaultValue);
 }

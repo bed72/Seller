@@ -22,9 +22,9 @@ class MeScreen extends StatefulWidget {
 class _MeScreenState extends State<MeScreen> with StateMixin {
   @override
   void completeState() {
-    context.read<MeLogic>().getMe(
-          const MeParams(url: AppContants.urlMe),
-        );
+    Provider.of<MeLogic>(context, listen: false).getMe(
+      const MeParams(url: AppContants.urlMe),
+    );
   }
 
   @override

@@ -10,20 +10,20 @@ enum HttpResponse {
 
 /// Devolvemos neste caso, a key do arquivo de 'localization'
 extension HttpResponseExtension on HttpResponse {
-  String get descripition {
+  String get value {
     switch (this) {
       case HttpResponse.notFound:
-        return 'appHelperNotFound';
+        return 'httpNotFound';
       case HttpResponse.forbidden:
-        return 'appHelperForbidden';
+        return 'httpForbidden';
       case HttpResponse.badRequest:
-        return 'appHelperBadRequest';
+        return 'httpBadRequest';
       case HttpResponse.serverError:
-        return 'appHelperServerError';
+        return 'httpServerError';
       case HttpResponse.unauthorized:
-        return 'appHelperUnauthorized';
+        return 'httpUnauthorized';
       default:
-        return 'appHelperGeneric';
+        return 'httpGeneric';
     }
   }
 
@@ -58,7 +58,7 @@ enum HttpMethod {
 }
 
 extension HttpMethodExtension on HttpMethod {
-  String get descripition {
+  String get value {
     switch (this) {
       case HttpMethod.get:
         return 'get';

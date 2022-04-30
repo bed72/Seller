@@ -1,4 +1,4 @@
-enum RemoteConfigError {
+enum RemoteConfigResponse {
   force,
   intValue,
   boolValue,
@@ -7,23 +7,23 @@ enum RemoteConfigError {
   dynamicValue
 }
 
-extension RemoteConfigErrorExtension on RemoteConfigError {
-  String get descripition {
+extension RemoteConfigResponseExtension on RemoteConfigResponse {
+  String get value {
     switch (this) {
-      case RemoteConfigError.force:
-        return 'appHelperNotHaveData';
-      case RemoteConfigError.intValue:
-        return 'appHelperNotHaveData';
-      case RemoteConfigError.boolValue:
-        return 'appHelperNotHaveData';
-      case RemoteConfigError.stringValue:
-        return 'appHelperNotHaveData';
-      case RemoteConfigError.doubleValue:
-        return 'appHelperNotHaveData';
-      case RemoteConfigError.dynamicValue:
-        return 'appHelperNotHaveData';
+      case RemoteConfigResponse.force:
+        return 'helperNotHaveData';
+      case RemoteConfigResponse.intValue:
+        return 'helperNotHaveData';
+      case RemoteConfigResponse.boolValue:
+        return 'helperNotHaveData';
+      case RemoteConfigResponse.stringValue:
+        return 'helperNotHaveData';
+      case RemoteConfigResponse.doubleValue:
+        return 'helperNotHaveData';
+      case RemoteConfigResponse.dynamicValue:
+        return 'helperNotHaveData';
       default:
-        return 'appHelperGeneric';
+        return 'helperGeneric';
     }
   }
 }

@@ -2,6 +2,8 @@ import 'package:flutter/widgets.dart';
 
 import 'package:provider/provider.dart';
 
+import 'package:seller/src/core/external/singletons/navigation_singleton.dart';
+
 import 'package:seller/src/modules/firabase/external/configs/firebase_config.dart';
 
 import 'package:seller/src/modules/storage/external/singletons/storage_singleton.dart';
@@ -15,6 +17,7 @@ Future<void> startApplicationDependencies() async {
 }
 
 Future<void> _startSingletons() async {
+  NavigationSingleton.instance.initialized();
   await StorageSingleton.instance.initialized();
 }
 

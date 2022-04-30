@@ -14,7 +14,16 @@ import 'package:seller/src/modules/auth/presentation/screens/auth/signup/states/
 class SignUpScreen extends StatelessWidget {
   static const String path = '/sign_in';
 
-  const SignUpScreen({Key? key}) : super(key: key);
+  final params = const SignUpParams(
+    password: 'cicada3301',
+    email: 'gjramos100@gmail.com',
+    url: AppContants.urlAuthSignUp,
+    httpMethod: HttpMethod.post,
+  );
+
+  const SignUpScreen({
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -23,10 +32,16 @@ class SignUpScreen extends StatelessWidget {
     return Scaffold(
       body: ValueListenableBuilder(
         valueListenable: _logic,
-        builder: (_, state, __) {
+        builder: (contex, state, __) {
           if (state is SignUpLoadingState) {
             return const Center(
               child: CircularProgressIndicator.adaptive(),
+            );
+          }
+
+          if (state is SignUpFailureState) {
+            return Center(
+              child: Text(state.message),
             );
           }
 
@@ -38,19 +53,7 @@ class SignUpScreen extends StatelessWidget {
                 const Text('Sign UP'),
                 TextButton(
                   onPressed: () async {
-                    await _logic.signUp(
-                      const SignUpParams(
-                        password: 'cicada3301',
-                        email: 'gjramos100@gmail.com',
-                        url: AppContants.urlAuthSignUp,
-                        httpMethod: HttpMethod.post,
-                      ),
-                    );
-
-                    Navigator.of(context).pushNamedAndRemoveUntil(
-                      MeScreen.path,
-                      (Route<dynamic> route) => false,
-                    );
+                    await _logic.signUp(MeScreen.path, params, contex);
                   },
                   child: const Text('Enter'),
                 ),

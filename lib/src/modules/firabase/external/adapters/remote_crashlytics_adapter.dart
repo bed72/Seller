@@ -1,5 +1,7 @@
-import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/foundation.dart';
+
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
+
 import 'package:seller/src/modules/firabase/data/clients/crashlytics_client.dart';
 
 class CrashlyticsAdapter implements CrashlyticsClient {

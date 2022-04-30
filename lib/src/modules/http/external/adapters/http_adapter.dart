@@ -33,7 +33,7 @@ class HttpAdapter implements HttpClient {
   }
 
   @override
-  Future<Either<HandleException, Map<String, dynamic>>> call({
+  Future<Either<HttpException, Map<String, dynamic>>> call({
     required String url,
     required HttpMethod method,
     Map<String, dynamic>? body,
@@ -90,16 +90,11 @@ class HttpAdapter implements HttpClient {
       }
 
       _response = await _futureResponse;
-    } catch (error) {
-      return Left(
-        ServerException(
-          message: error.toString(),
-          code: HttpResponse.serverError,
-        ),
-      );
+    } on DioError catch (error) {
+      return Left(_buildResponseError(error));
     }
 
-    return _buildResponse(_response);
+    return Right(_buildResponseSuccess(_response));
   }
 
   Map<String, String> _buildEmptyBody() => {
@@ -117,49 +112,45 @@ class HttpAdapter implements HttpClient {
           'apikey': AppContants.apikeyAnon,
         });
 
-  Either<HandleException, Map<String, dynamic>> _buildResponse(
-      Response<dynamic> response) {
+  Map<String, dynamic> _buildResponseSuccess(
+    Response<dynamic> response,
+  ) {
     switch (response.statusCode) {
       case 200:
-        return response.data.isEmpty
-            ? Right(_buildEmptyBody())
-            : Right(response.data);
+        return response.data.isEmpty ? _buildEmptyBody() : response.data;
       case 204:
-        return Right(_buildEmptyBody());
+        return _buildEmptyBody();
+      default:
+        return _buildEmptyBody();
+    }
+  }
+
+  HttpException _buildResponseError(DioError error) {
+    switch (error.response?.statusCode ?? 500) {
       case 400:
-        return Left(
-          ServerException(
-            message: '',
-            code: HttpResponse.badRequest,
-          ),
+        return HttpException(
+          code: HttpResponse.badRequest,
+          message: HttpResponse.badRequest.value,
         );
       case 401:
-        return Left(
-          ServerException(
-            message: '',
-            code: HttpResponse.unauthorized,
-          ),
+        return HttpException(
+          code: HttpResponse.unauthorized,
+          message: HttpResponse.unauthorized.value,
         );
       case 403:
-        return Left(
-          ServerException(
-            message: '',
-            code: HttpResponse.forbidden,
-          ),
+        return HttpException(
+          code: HttpResponse.forbidden,
+          message: HttpResponse.forbidden.value,
         );
       case 404:
-        return Left(
-          ServerException(
-            message: '',
-            code: HttpResponse.notFound,
-          ),
+        return HttpException(
+          code: HttpResponse.notFound,
+          message: HttpResponse.notFound.value,
         );
       default:
-        return Left(
-          ServerException(
-            message: '',
-            code: HttpResponse.serverError,
-          ),
+        return HttpException(
+          code: HttpResponse.serverError,
+          message: HttpResponse.serverError.value,
         );
     }
   }

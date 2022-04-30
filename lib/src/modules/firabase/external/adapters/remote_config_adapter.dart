@@ -1,8 +1,14 @@
 import 'package:flutter/services.dart';
 
 import 'package:firebase_remote_config/firebase_remote_config.dart';
+import 'package:seller/src/core/domain/entities/either/left_entity.dart';
+import 'package:seller/src/core/domain/entities/either/right_entity.dart';
+
+import 'package:seller/src/core/domain/entities/exception/exception.dart';
+import 'package:seller/src/core/domain/entities/either/either_entity.dart';
 
 import 'package:seller/src/modules/firabase/data/clients/remote_config_client.dart';
+import 'package:seller/src/modules/firabase/domain/helpers/remote_config_helper.dart';
 
 class RemoteConfigAdapter implements RemoteConfigClient {
   late final FirebaseRemoteConfig _remoteConfig;
@@ -10,50 +16,115 @@ class RemoteConfigAdapter implements RemoteConfigClient {
   RemoteConfigAdapter(this._remoteConfig);
 
   @override
-  Future<void> forceRefresh() async {
+  Future<Either<RemoteConfigException, bool>> forceRefresh() async {
     try {
       await remoteConfigSettings(
         minimumFetchInterval: const Duration(seconds: 0),
       );
 
-      await _remoteConfig.fetchAndActivate();
+      final _vaule = await _remoteConfig.fetchAndActivate();
+
+      return Right(_vaule);
     } on PlatformException catch (exception) {
-      throw (exception.toString());
+      return Left(
+        RemoteConfigException(
+          message: exception.toString(),
+          code: RemoteConfigResponse.force,
+        ),
+      );
     } catch (exception) {
-      throw ('Error to fetch data in Remote Config');
+      return Left(
+        RemoteConfigException(
+          message: exception.toString(),
+          code: RemoteConfigResponse.force,
+        ),
+      );
     }
   }
 
   @override
-  int getInt(String key, defaultValue) {
-    final _value = _remoteConfig.getInt(key);
+  Either<RemoteConfigException, int> getInt(String key, defaultValue) {
+    try {
+      final _response = _remoteConfig.getInt(key);
+      final _vaule = _response != 0 ? _response : defaultValue as int;
 
-    return _value != 0 ? _value : defaultValue;
+      return Right(_vaule);
+    } catch (exception) {
+      return Left(
+        RemoteConfigException(
+          message: exception.toString(),
+          code: RemoteConfigResponse.intValue,
+        ),
+      );
+    }
   }
 
   @override
-  bool getBool(String key, defaultValue) {
-    final _value = _remoteConfig.getBool(key);
+  Either<RemoteConfigException, bool> getBool(String key, defaultValue) {
+    try {
+      final _response = _remoteConfig.getBool(key);
+      final _vaule = _response != false ? _response : defaultValue as bool;
 
-    return _value != false ? _value : defaultValue;
+      return Right(_vaule);
+    } catch (exception) {
+      return Left(
+        RemoteConfigException(
+          message: exception.toString(),
+          code: RemoteConfigResponse.boolValue,
+        ),
+      );
+    }
   }
 
   @override
-  String getString(String key, defaultValue) {
-    final _value = _remoteConfig.getString(key);
+  Either<RemoteConfigException, String> getString(String key, defaultValue) {
+    try {
+      final _response = _remoteConfig.getString(key);
+      final _vaule = _response.isNotEmpty ? _response : defaultValue as String;
 
-    return _value.isNotEmpty ? _value : defaultValue;
+      return Right(_vaule);
+    } catch (exception) {
+      return Left(
+        RemoteConfigException(
+          message: exception.toString(),
+          code: RemoteConfigResponse.stringValue,
+        ),
+      );
+    }
   }
 
   @override
-  double getDouble(String key, defaultValue) {
-    final _value = _remoteConfig.getDouble(key);
+  Either<RemoteConfigException, double> getDouble(String key, defaultValue) {
+    try {
+      final _response = _remoteConfig.getDouble(key);
+      final _vaule = _response != 0.0 ? _response : defaultValue as double;
 
-    return _value != 0.0 ? _value : defaultValue;
+      return Right(_vaule);
+    } catch (exception) {
+      return Left(
+        RemoteConfigException(
+          message: exception.toString(),
+          code: RemoteConfigResponse.doubleValue,
+        ),
+      );
+    }
   }
 
   @override
-  getValue(String key, defaultValue) => _remoteConfig.getValue(key);
+  Either<RemoteConfigException, dynamic> getValue(String key, defaultValue) {
+    try {
+      final _response = _remoteConfig.getValue(key);
+
+      return Right(_response);
+    } catch (exception) {
+      return Left(
+        RemoteConfigException(
+          message: exception.toString(),
+          code: RemoteConfigResponse.dynamicValue,
+        ),
+      );
+    }
+  }
 
   @override
   Future<void> remoteConfigSettings({

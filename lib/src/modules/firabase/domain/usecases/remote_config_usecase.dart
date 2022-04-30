@@ -1,27 +1,30 @@
+import 'package:seller/src/core/domain/entities/either/either_entity.dart';
+import 'package:seller/src/core/domain/entities/exception/exception.dart';
+
 abstract class RemoteConfigUseCase {
-  Future<void> forceRefresh();
+  Future<Either<RemoteConfigException, bool>> forceRefresh();
 
-  int getInt({
+  Either<RemoteConfigException, int> getInt({
     required String key,
     required dynamic defaultValue,
   });
 
-  bool getBool({
+  Either<RemoteConfigException, bool> getBool({
     required String key,
     required dynamic defaultValue,
   });
 
-  String getString({
+  Either<RemoteConfigException, String> getString({
     required String key,
     required dynamic defaultValue,
   });
 
-  double getDouble({
+  Either<RemoteConfigException, double> getDouble({
     required String key,
     required dynamic defaultValue,
   });
 
-  dynamic getValue({
+  Either<RemoteConfigException, dynamic> getValue({
     required String key,
     required dynamic defaultValue,
   });

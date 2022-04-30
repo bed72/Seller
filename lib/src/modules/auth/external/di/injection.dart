@@ -23,6 +23,7 @@ final authModule = [
   Provider<SignUpLogic>(
     create: (context) => SignUpLogic(
       context.read<SignUpUseCase>(),
+      context.read<CrashlyticsUseCase>(),
     ),
   ),
 

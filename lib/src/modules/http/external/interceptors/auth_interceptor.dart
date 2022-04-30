@@ -19,7 +19,7 @@ class AuthInterceptor extends Interceptor {
     super.onRequest(options, handler);
 
     if (AppContants.urlAuthSignUp != options.path) {
-      options.headers.addAll(await _addAuthorizationHeader());
+      options.headers.addAll(_addAuthorizationHeader());
     }
   }
 
@@ -39,8 +39,8 @@ class AuthInterceptor extends Interceptor {
     }
   }
 
-  Future<Map<String, String>> _addAuthorizationHeader() async {
-    final _accessToken = await _getAccessToken();
+  Map<String, String> _addAuthorizationHeader() {
+    final _accessToken = _getAccessToken();
 
     return <String, String>{'authorization': 'Bearer $_accessToken'};
   }
@@ -59,8 +59,11 @@ class AuthInterceptor extends Interceptor {
     }
   }
 
-  Future<String?> _getAccessToken() async =>
-      await _storageUseCase.get(key: AppContants.keyAccessToken);
+  String? _getAccessToken() {
+    final _data = _storageUseCase.get(key: AppContants.keyAccessToken);
+
+    return _data.isRight ? _data.right : null;
+  }
 
   Future<void> _saveAuthData(String key, String data) async {
     await _storageUseCase.save(

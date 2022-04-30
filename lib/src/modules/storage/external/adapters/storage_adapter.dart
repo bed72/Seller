@@ -1,6 +1,13 @@
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'package:seller/src/core/domain/entities/either/left_entity.dart';
+import 'package:seller/src/core/domain/entities/either/right_entity.dart';
+import 'package:seller/src/core/domain/entities/exception/exception.dart';
+import 'package:seller/src/core/domain/entities/either/either_entity.dart';
+
 import 'package:seller/src/modules/storage/data/clients/storage_client.dart';
+
+import 'package:seller/src/modules/storage/domain/helpers/storage_helper.dart';
 
 class StorageAdapter implements StorageClient {
   late final SharedPreferences _storage;
@@ -8,26 +15,70 @@ class StorageAdapter implements StorageClient {
   StorageAdapter(this._storage);
 
   @override
-  Future<void> clear() async {
-    await _storage.clear();
+  Future<Either<StorageException, bool>> clear() async {
+    try {
+      final _response = await _storage.clear();
+
+      return Right(_response);
+    } catch (exception) {
+      return Left(
+        StorageException(
+          code: StorageResponse.clear,
+          message: exception.toString(),
+        ),
+      );
+    }
   }
 
   @override
-  Future<String> get(String key) async {
-    return _storage.getString(key) ?? '';
+  Either<StorageException, String> get(String key) {
+    try {
+      final _response = _storage.getString(key) ?? '';
+
+      return Right(_response);
+    } catch (exception) {
+      return Left(
+        StorageException(
+          code: StorageResponse.get,
+          message: exception.toString(),
+        ),
+      );
+    }
   }
 
   @override
-  Future<void> delete(String key) async {
-    await _storage.remove(key);
+  Future<Either<StorageException, bool>> delete(String key) async {
+    try {
+      final _response = await _storage.remove(key);
+
+      return Right(_response);
+    } catch (exception) {
+      return Left(
+        StorageException(
+          code: StorageResponse.delete,
+          message: exception.toString(),
+        ),
+      );
+    }
   }
 
   @override
-  Future<void> save({
+  Future<Either<StorageException, bool>> save({
     required String key,
     required String value,
   }) async {
-    await _storage.remove(key);
-    await _storage.setString(key, value);
+    try {
+      await _storage.remove(key);
+      final _response = await _storage.setString(key, value);
+
+      return Right(_response);
+    } catch (exception) {
+      return Left(
+        StorageException(
+          code: StorageResponse.save,
+          message: exception.toString(),
+        ),
+      );
+    }
   }
 }
