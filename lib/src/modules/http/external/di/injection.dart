@@ -25,7 +25,7 @@ final httpModule = [
   Provider<HttpClient>(
     create: (context) => HttpAdapter(
       context.read<Dio>(),
-      context.read<StorageUsecase>(),
+      context.read<StorageUseCase>(),
     ),
   ),
 ];

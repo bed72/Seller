@@ -10,7 +10,7 @@ import 'package:seller/src/modules/firabase/domain/usecases/crashlytics_usecase.
 import 'package:seller/src/modules/auth/data/usecases/me/remote_me_usecase.dart';
 import 'package:seller/src/modules/auth/data/usecases/signup/remote_signup_usecase.dart';
 
-import 'package:seller/src/modules/auth/presentation/screens/auth/me/states/me_logic.dart';
+import 'package:seller/src/modules/auth/presentation/screens/auth/me/bloc/me_bloc.dart';
 import 'package:seller/src/modules/auth/presentation/screens/auth/signup/bloc/signup_bloc.dart';
 
 final authModule = [
@@ -35,8 +35,8 @@ final authModule = [
     ),
   ),
 
-  Provider<MeLogic>(
-    create: (context) => MeLogic(
+  Provider<MeBloc>(
+    create: (context) => MeBloc(
       context.read<MeUseCase>(),
       context.read<CrashlyticsUseCase>(),
     ),

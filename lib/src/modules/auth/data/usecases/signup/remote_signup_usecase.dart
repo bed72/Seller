@@ -23,11 +23,9 @@ class RemoteSignUpUseCase extends SignUpUseCase {
       method: params.httpMethod,
     );
 
-    final _value = _response.either(
+    return _response.either(
       (left) => left,
       (right) => SignUpModel.fromJson(right),
     );
-
-    return _value;
   }
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:seller/src/utils/constants/app_constant.dart';
@@ -45,6 +46,7 @@ class SignUpScreen extends StatelessWidget {
         child: BlocBuilder<SignupBloc, SignUpState>(
           bloc: _bloc,
           builder: (_, SignUpState state) {
+            print('\n\n STATE -> [$state] \n\n');
             if (state is SignUpLoadingState) {
               return const Center(
                 child: CircularProgressIndicator.adaptive(),

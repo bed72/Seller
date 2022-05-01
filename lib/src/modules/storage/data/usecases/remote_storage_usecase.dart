@@ -5,10 +5,10 @@ import 'package:seller/src/modules/storage/data/clients/storage_client.dart';
 
 import 'package:seller/src/modules/storage/domain/usecases/storage_usecase.dart';
 
-class RemoteStorageUsecase implements StorageUsecase {
+class RemoteStorageUseCase implements StorageUseCase {
   late final StorageClient _storageClient;
 
-  RemoteStorageUsecase(this._storageClient);
+  RemoteStorageUseCase(this._storageClient);
 
   @override
   Future<Either<StorageException, bool>> clear() async =>

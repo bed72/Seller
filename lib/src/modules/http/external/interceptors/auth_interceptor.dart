@@ -7,7 +7,7 @@ import 'package:seller/src/utils/constants/app_constant.dart';
 import 'package:seller/src/modules/storage/domain/usecases/storage_usecase.dart';
 
 class AuthInterceptor extends Interceptor {
-  late final StorageUsecase _storageUseCase;
+  late final StorageUseCase _storageUseCase;
 
   AuthInterceptor(this._storageUseCase);
 

@@ -18,7 +18,7 @@ import 'package:seller/src/modules/http/external/interceptors/auth_interceptor.d
 
 class HttpAdapter implements HttpClient {
   late final Dio _http;
-  late final StorageUsecase _storageUseCase;
+  late final StorageUseCase _storageUseCase;
 
   HttpAdapter(
     this._http,

@@ -3,7 +3,7 @@ part of 'signup_bloc.dart';
 @immutable
 abstract class SignUpEvent extends Equatable {
   @override
-  List<Object> get props => [];
+  List<Object?> get props => [];
 }
 
 @immutable
@@ -13,5 +13,5 @@ class SignUpAwnerEvent extends SignUpEvent {
   SignUpAwnerEvent(this.params);
 
   @override
-  List<Object> get props => [params];
+  List<Object?> get props => [params];
 }

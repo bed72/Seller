@@ -1,4 +1,4 @@
-part of 'me_logic.dart';
+part of 'me_bloc.dart';
 
 @immutable
 abstract class MeState extends Equatable {

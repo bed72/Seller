@@ -1,8 +1,9 @@
-import 'package:seller/src/modules/auth/data/models/me/me_model.dart';
-
 import 'package:seller/src/modules/http/data/clients/http_client.dart';
-import 'package:seller/src/modules/http/domain/helpers/http_helper.dart';
 
+import 'package:seller/src/core/domain/entities/exception/exception.dart';
+import 'package:seller/src/core/domain/entities/either/either_entity.dart';
+
+import 'package:seller/src/modules/auth/data/models/me/me_model.dart';
 import 'package:seller/src/modules/auth/domain/entities/me/me_entity.dart';
 import 'package:seller/src/modules/auth/domain/usecases/me/me_usecase.dart';
 
@@ -12,16 +13,17 @@ class RemoteMeUseCase extends MeUseCase {
   RemoteMeUseCase(this._call);
 
   @override
-  Future<MeEntity> getMe(MeParams params) async {
-    try {
-      final _response = await _call(
-        url: params.url,
-        method: HttpMethod.get,
-      );
+  Future<Either<HttpException, MeEntity>> call(
+    MeParams params,
+  ) async {
+    final _response = await _call(
+      url: params.url,
+      method: params.httpMethod,
+    );
 
-      return MeModel.fromJson(_response.right);
-    } on HttpResponse catch (_) {
-      rethrow;
-    }
+    return _response.either(
+      (left) => left,
+      (right) => MeModel.fromJson(right),
+    );
   }
 }

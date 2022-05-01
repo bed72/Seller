@@ -17,8 +17,8 @@ final storageModule = [
       context.read<SharedPreferences>(),
     ),
   ),
-  Provider<StorageUsecase>(
-    create: (context) => RemoteStorageUsecase(
+  Provider<StorageUseCase>(
+    create: (context) => RemoteStorageUseCase(
       context.read<StorageClient>(),
     ),
   ),

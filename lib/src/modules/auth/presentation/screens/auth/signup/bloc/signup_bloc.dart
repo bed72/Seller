@@ -1,6 +1,7 @@
 import 'package:bloc/bloc.dart';
 
 import 'package:flutter/foundation.dart';
+
 import 'package:equatable/equatable.dart';
 
 import 'package:bloc_concurrency/bloc_concurrency.dart';
