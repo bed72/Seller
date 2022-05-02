@@ -46,10 +46,10 @@ class SplashBloc extends Bloc<SplashEvent, SplashState> {
         : emit(SplashThereIsNoConnectionState('No connection'));
   }
 
-  Future<void> _verifyAccessToken(
+  void _verifyAccessToken(
     SplashVerifyAccessTokenEvent event,
     Emitter<SplashState> emit,
-  ) async {
+  ) {
     final _accessToken = _getAccessToken();
 
     _accessToken.isNotEmpty
