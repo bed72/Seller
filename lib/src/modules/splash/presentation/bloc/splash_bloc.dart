@@ -25,7 +25,7 @@ class SplashBloc extends Bloc<SplashEvent, SplashState> {
   ) : super(SplashInitialState()) {
     on<SplashVerifyConnectivityEvent>(
       _verifyConnectivity,
-      transformer: restartable(),
+      transformer: concurrent(),
     );
     on<SplashVerifyAccessTokenEvent>(
       _verifyAccessToken,

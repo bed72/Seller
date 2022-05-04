@@ -4,7 +4,7 @@ import 'package:seller/src/core/domain/entities/exception/exception.dart';
 import 'package:seller/src/core/domain/entities/either/either_entity.dart';
 
 abstract class HttpClient {
-  void registerInterceptors();
+  void configureHttp();
 
   Future<Either<HttpException, Map<String, dynamic>>> call({
     required String url,

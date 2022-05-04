@@ -10,13 +10,12 @@ import 'package:seller/src/utils/debounce/call_debounce.dart';
 
 import 'package:seller/src/core/presentation/mixins/state_mixin.dart';
 
+import 'package:seller/src/modules/auth/presentation/routes/routers.dart';
+
 import 'package:seller/src/modules/splash/presentation/bloc/splash_bloc.dart';
 
-import 'package:seller/src/modules/auth/presentation/screens/auth/me/me_screen.dart';
-import 'package:seller/src/modules/auth/presentation/screens/auth/signup/signup_screen.dart';
-
 class SplashScreen extends StatefulWidget {
-  static const String path = '/splash';
+  static const String pathRoot = '/splash';
 
   const SplashScreen({Key? key}) : super(key: key);
 
@@ -55,9 +54,9 @@ class _SplashScreenState extends State<SplashScreen> with StateMixin {
           bloc: _bloc,
           listener: (_, SplashState state) {
             if (state is SplashThereIsAccessTokenState) {
-              navigateTo(MeScreen.path);
+              navigateTo(AuthRoutes.pathMe);
             } else if (state is SplashThereIsNoAccessTokenState) {
-              navigateTo(SignUpScreen.path);
+              navigateTo(AuthRoutes.pathSignIn);
             }
           },
           child: BlocBuilder<SplashBloc, SplashState>(

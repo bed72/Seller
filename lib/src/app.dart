@@ -23,7 +23,7 @@ class App extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         supportedLocales: supportedLocales,
         localizationsDelegates: localizationsDelegates,
-        initialRoute: SplashScreen.path,
+        initialRoute: SplashScreen.pathRoot,
         navigatorKey: Navigation.navigatorKey,
         onGenerateRoute: Navigation.onGenerateRoute,
         onGenerateTitle: (BuildContext context) => context.localize.appTitle,

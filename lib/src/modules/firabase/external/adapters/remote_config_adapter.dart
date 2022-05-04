@@ -13,7 +13,9 @@ import 'package:seller/src/modules/firabase/domain/helpers/remote_config_helper.
 class RemoteConfigAdapter implements RemoteConfigClient {
   late final FirebaseRemoteConfig _remoteConfig;
 
-  RemoteConfigAdapter(this._remoteConfig);
+  RemoteConfigAdapter(this._remoteConfig) {
+    forceRefresh();
+  }
 
   @override
   Future<Either<RemoteConfigException, bool>> forceRefresh() async {

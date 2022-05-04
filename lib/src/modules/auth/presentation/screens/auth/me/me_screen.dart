@@ -14,8 +14,6 @@ import 'package:seller/src/modules/auth/domain/usecases/me/me_usecase.dart';
 import 'package:seller/src/modules/auth/presentation/screens/auth/me/bloc/me_bloc.dart';
 
 class MeScreen extends StatefulWidget {
-  static const String path = '/me';
-
   const MeScreen({Key? key}) : super(key: key);
 
   @override

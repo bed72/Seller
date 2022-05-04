@@ -4,9 +4,8 @@ import 'package:dio/dio.dart';
 
 import 'package:seller/src/utils/constants/app_constant.dart';
 
-import 'package:seller/src/core/domain/entities/exception/exception.dart';
-
 import 'package:seller/src/core/domain/entities/either/left_entity.dart';
+import 'package:seller/src/core/domain/entities/exception/exception.dart';
 import 'package:seller/src/core/domain/entities/either/right_entity.dart';
 import 'package:seller/src/core/domain/entities/either/either_entity.dart';
 
@@ -16,19 +15,39 @@ import 'package:seller/src/modules/http/data/clients/http_client.dart';
 import 'package:seller/src/modules/http/domain/helpers/http_helper.dart';
 import 'package:seller/src/modules/http/external/interceptors/auth_interceptor.dart';
 
+import 'package:seller/src/modules/firabase/domain/usecases/remote_config_usecase.dart';
+
 class HttpAdapter implements HttpClient {
   late final Dio _http;
   late final StorageUseCase _storageUseCase;
+  late final RemoteConfigUseCase _remoteConfigUseCase;
 
   HttpAdapter(
     this._http,
     this._storageUseCase,
+    this._remoteConfigUseCase,
   ) {
-    registerInterceptors();
+    configureHttp();
   }
 
   @override
-  void registerInterceptors() {
+  void configureHttp() {
+    _configureDio();
+    _addInterceptors();
+  }
+
+  void _configureDio() {
+    _http.options = BaseOptions(
+      maxRedirects: 2,
+      sendTimeout: 6000,
+      receiveTimeout: 6000,
+      connectTimeout: 6000,
+      responseType: ResponseType.json,
+      baseUrl: _getRemoteData(AppContants.urlHowgarts),
+    );
+  }
+
+  void _addInterceptors() {
     _http.interceptors.add(AuthInterceptor(_storageUseCase));
   }
 
@@ -109,8 +128,17 @@ class HttpAdapter implements HttpClient {
         ..addAll({
           'accept': 'application/json',
           'content-type': 'application/json',
-          'apikey': AppContants.apikeyAnon,
+          'apikey': _getRemoteData(AppContants.apikeyAnon),
         });
+
+  String _getRemoteData(String key) {
+    final value = _remoteConfigUseCase.getString(
+      key: key,
+      defaultValue: '',
+    );
+
+    return value.isRight ? value.right : '';
+  }
 
   Map<String, dynamic> _buildResponseSuccess(
     Response<dynamic> response,
