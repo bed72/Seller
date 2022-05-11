@@ -38,7 +38,7 @@ class _MeScreenState extends State<MeScreen> with StateMixin {
 
   @override
   Widget build(BuildContext context) {
-    final _bloc = context.watch<MeBloc>();
+    final bloc = context.watch<MeBloc>();
 
     return Scaffold(
       appBar: AppBar(
@@ -46,7 +46,7 @@ class _MeScreenState extends State<MeScreen> with StateMixin {
       ),
       body: SafeArea(
         child: BlocBuilder<MeBloc, MeState>(
-          bloc: _bloc,
+          bloc: bloc,
           builder: (_, MeState state) {
             print('\n\n STATE -> [$state] \n\n');
             if (state is MeLoadingState) {

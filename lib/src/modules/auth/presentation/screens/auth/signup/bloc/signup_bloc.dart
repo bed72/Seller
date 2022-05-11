@@ -31,14 +31,14 @@ class SignupBloc extends Bloc<SignUpEvent, SignUpState> {
   ) async {
     emit(SignUpLoadingState());
 
-    final _response = await _signUpUseCase(event.params).onError(
+    final response = await _signUpUseCase(event.params).onError(
       (exception, stack) => _crashlyticsUseCase.recordError(
         exception: exception ?? '',
         stack: stack,
       ),
     );
 
-    _response.fold(
+    response.fold(
       (left) => emit(SignUpFailureState(left.message)),
       (right) => emit(SignUpSuccessState(right)),
     );

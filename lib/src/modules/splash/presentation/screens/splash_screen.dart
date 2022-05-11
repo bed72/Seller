@@ -46,12 +46,12 @@ class _SplashScreenState extends State<SplashScreen> with StateMixin {
 
   @override
   Widget build(BuildContext context) {
-    final _bloc = context.watch<SplashBloc>();
+    final bloc = context.watch<SplashBloc>();
 
     return Scaffold(
       body: SafeArea(
         child: BlocListener<SplashBloc, SplashState>(
-          bloc: _bloc,
+          bloc: bloc,
           listener: (_, SplashState state) {
             if (state is SplashThereIsAccessTokenState) {
               navigateTo(AuthRoutes.pathMe);
@@ -60,7 +60,7 @@ class _SplashScreenState extends State<SplashScreen> with StateMixin {
             }
           },
           child: BlocBuilder<SplashBloc, SplashState>(
-            bloc: _bloc,
+            bloc: bloc,
             builder: (_, SplashState state) {
               if (state is SplashLoadingState) {
                 return const Center(

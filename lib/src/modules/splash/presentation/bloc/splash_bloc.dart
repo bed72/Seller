@@ -39,9 +39,9 @@ class SplashBloc extends Bloc<SplashEvent, SplashState> {
   ) async {
     emit(SplashLoadingState());
 
-    final _response = await _connectivityUseCase();
+    final response = await _connectivityUseCase();
 
-    _response
+    response
         ? emit(SplashThereIsConnectionState())
         : emit(SplashThereIsNoConnectionState('No connection'));
   }
@@ -50,16 +50,16 @@ class SplashBloc extends Bloc<SplashEvent, SplashState> {
     SplashVerifyAccessTokenEvent event,
     Emitter<SplashState> emit,
   ) {
-    final _accessToken = _getAccessToken();
+    final accessToken = _getAccessToken();
 
-    _accessToken.isNotEmpty
+    accessToken.isNotEmpty
         ? emit(SplashThereIsAccessTokenState())
         : emit(SplashThereIsNoAccessTokenState());
   }
 
   String _getAccessToken() {
-    final _data = _storageUseCase.get(key: AppContants.keyAccessToken);
+    final data = _storageUseCase.get(key: AppContants.keyAccessToken);
 
-    return _data.isRight ? _data.right : '';
+    return data.isRight ? data.right : '';
   }
 }

@@ -33,18 +33,18 @@ class SignUpScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final _bloc = context.read<SignupBloc>();
+    final bloc = context.read<SignupBloc>();
 
     return Scaffold(
       body: BlocListener<SignupBloc, SignUpState>(
-        bloc: _bloc,
+        bloc: bloc,
         listener: (_, SignUpState state) {
           if (state is SignUpSuccessState) {
             _navigateTo(AuthRoutes.pathMe, context);
           }
         },
         child: BlocBuilder<SignupBloc, SignUpState>(
-          bloc: _bloc,
+          bloc: bloc,
           builder: (_, SignUpState state) {
             print('\n\n STATE -> [$state] \n\n');
             if (state is SignUpLoadingState) {
@@ -67,7 +67,7 @@ class SignUpScreen extends StatelessWidget {
                   const Text('Sign UP'),
                   TextButton(
                     onPressed: () {
-                      _bloc.add(SignUpAwnerEvent(params));
+                      bloc.add(SignUpAwnerEvent(params));
                     },
                     child: const Text('Enter'),
                   ),

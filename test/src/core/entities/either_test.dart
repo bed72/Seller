@@ -88,13 +88,13 @@ void main() {
       expect(value.isRight, false);
       expect(value.isLeft, true);
 
-      final _value = const Left<bool, String>(true).swap();
-      expect(_value.isRight, true);
-      expect(_value.isLeft, false);
+      final valueObject = const Left<bool, String>(true).swap();
+      expect(valueObject.isRight, true);
+      expect(valueObject.isLeft, false);
 
-      final __value = value.swap();
-      expect(__value.isRight, true);
-      expect(__value.isLeft, false);
+      final valueObjectTest = value.swap();
+      expect(valueObjectTest.isRight, true);
+      expect(valueObjectTest.isLeft, false);
     });
 
     test('Test the tryCatch', () {

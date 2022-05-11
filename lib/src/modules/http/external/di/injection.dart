@@ -2,8 +2,6 @@ import 'package:dio/dio.dart';
 
 import 'package:provider/provider.dart';
 
-import 'package:seller/src/utils/constants/app_constant.dart';
-
 import 'package:seller/src/modules/http/data/clients/http_client.dart';
 import 'package:seller/src/modules/http/external/adapters/http_adapter.dart';
 

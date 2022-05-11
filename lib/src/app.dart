@@ -18,6 +18,7 @@ class App extends StatelessWidget {
         restorationScopeId: 'app',
         theme: ThemeData(
           useMaterial3: true,
+          primarySwatch: Colors.red,
         ),
         themeMode: ThemeMode.system,
         debugShowCheckedModeBanner: false,

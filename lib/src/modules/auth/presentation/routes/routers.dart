@@ -15,24 +15,23 @@ class AuthRoutes extends StatelessWidget {
     return Navigator(
       initialRoute: pathSignIn,
       onGenerateRoute: (RouteSettings settings) {
-        // ignore: prefer_typing_uninitialized_variables
-        late final Widget _widget;
+        late final Widget widget;
         // ignore: unused_local_variable
-        late final _args = settings.arguments;
+        late final args = settings.arguments;
 
         switch (settings.name) {
           case pathSignIn:
-            _widget = const SignUpScreen();
+            widget = const SignUpScreen();
             break;
           case pathMe:
-            _widget = const MeScreen();
+            widget = const MeScreen();
             break;
           default:
-            _widget = const SignUpScreen();
+            widget = const SignUpScreen();
             break;
         }
 
-        return MaterialPageRoute(builder: (BuildContext context) => _widget);
+        return MaterialPageRoute(builder: (BuildContext context) => widget);
       },
     );
   }

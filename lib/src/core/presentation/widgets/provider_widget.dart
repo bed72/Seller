@@ -15,8 +15,8 @@ class ProviderWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
-      child: child,
       providers: providers,
+      child: child,
     );
   }
 }

@@ -16,12 +16,12 @@ class RemoteMeUseCase extends MeUseCase {
   Future<Either<HttpException, MeEntity>> call(
     MeParams params,
   ) async {
-    final _response = await _call(
+    final response = await _call(
       url: params.url,
       method: params.httpMethod,
     );
 
-    return _response.either(
+    return response.either(
       (left) => left,
       (right) => MeModel.fromJson(right),
     );

@@ -58,8 +58,8 @@ class HttpAdapter implements HttpClient {
     Map<String, dynamic>? body,
     Map<String, String>? headers,
   }) async {
-    Future<Response>? _futureResponse;
-    Response<dynamic> _response = Response(
+    Future<Response>? futureResponse;
+    Response<dynamic> response = Response(
       requestOptions: RequestOptions(
         path: url,
         sendTimeout: 6,
@@ -68,52 +68,52 @@ class HttpAdapter implements HttpClient {
       ),
     );
 
-    final _jsonBody = _buildBody(body);
-    final _defaultHeaders = _buildHeaders(headers);
+    final jsonBody = _buildBody(body);
+    final defaultHeaders = _buildHeaders(headers);
 
     try {
       switch (method) {
         case HttpMethod.post:
-          _futureResponse = _http.post(
+          futureResponse = _http.post(
             url,
-            data: _jsonBody,
-            options: Options(headers: _defaultHeaders),
+            data: jsonBody,
+            options: Options(headers: defaultHeaders),
           );
           break;
         case HttpMethod.get:
-          _futureResponse = _http.get(
+          futureResponse = _http.get(
             url,
-            options: Options(headers: _defaultHeaders),
+            options: Options(headers: defaultHeaders),
           );
           break;
         case HttpMethod.put:
-          _futureResponse = _http.put(
+          futureResponse = _http.put(
             url,
-            data: _jsonBody,
-            options: Options(headers: _defaultHeaders),
+            data: jsonBody,
+            options: Options(headers: defaultHeaders),
           );
           break;
         case HttpMethod.patch:
-          _futureResponse = _http.patch(
+          futureResponse = _http.patch(
             url,
-            data: _jsonBody,
-            options: Options(headers: _defaultHeaders),
+            data: jsonBody,
+            options: Options(headers: defaultHeaders),
           );
           break;
         case HttpMethod.delete:
-          _futureResponse = _http.delete(
+          futureResponse = _http.delete(
             url,
-            options: Options(headers: _defaultHeaders),
+            options: Options(headers: defaultHeaders),
           );
           break;
       }
 
-      _response = await _futureResponse;
+      response = await futureResponse;
     } on DioError catch (error) {
       return Left(_buildResponseError(error));
     }
 
-    return Right(_buildResponseSuccess(_response));
+    return Right(_buildResponseSuccess(response));
   }
 
   Map<String, String> _buildEmptyBody() => {

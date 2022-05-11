@@ -24,9 +24,9 @@ class RemoteConfigAdapter implements RemoteConfigClient {
         minimumFetchInterval: const Duration(seconds: 0),
       );
 
-      final _vaule = await _remoteConfig.fetchAndActivate();
+      final vaule = await _remoteConfig.fetchAndActivate();
 
-      return Right(_vaule);
+      return Right(vaule);
     } on PlatformException catch (exception) {
       return Left(
         RemoteConfigException(
@@ -47,10 +47,10 @@ class RemoteConfigAdapter implements RemoteConfigClient {
   @override
   Either<RemoteConfigException, int> getInt(String key, defaultValue) {
     try {
-      final _response = _remoteConfig.getInt(key);
-      final _vaule = _response != 0 ? _response : defaultValue as int;
+      final response = _remoteConfig.getInt(key);
+      final vaule = response != 0 ? response : defaultValue as int;
 
-      return Right(_vaule);
+      return Right(vaule);
     } catch (exception) {
       return Left(
         RemoteConfigException(
@@ -64,10 +64,10 @@ class RemoteConfigAdapter implements RemoteConfigClient {
   @override
   Either<RemoteConfigException, bool> getBool(String key, defaultValue) {
     try {
-      final _response = _remoteConfig.getBool(key);
-      final _vaule = _response != false ? _response : defaultValue as bool;
+      final response = _remoteConfig.getBool(key);
+      final vaule = response != false ? response : defaultValue as bool;
 
-      return Right(_vaule);
+      return Right(vaule);
     } catch (exception) {
       return Left(
         RemoteConfigException(
@@ -81,10 +81,10 @@ class RemoteConfigAdapter implements RemoteConfigClient {
   @override
   Either<RemoteConfigException, String> getString(String key, defaultValue) {
     try {
-      final _response = _remoteConfig.getString(key);
-      final _vaule = _response.isNotEmpty ? _response : defaultValue as String;
+      final response = _remoteConfig.getString(key);
+      final vaule = response.isNotEmpty ? response : defaultValue as String;
 
-      return Right(_vaule);
+      return Right(vaule);
     } catch (exception) {
       return Left(
         RemoteConfigException(
@@ -98,10 +98,10 @@ class RemoteConfigAdapter implements RemoteConfigClient {
   @override
   Either<RemoteConfigException, double> getDouble(String key, defaultValue) {
     try {
-      final _response = _remoteConfig.getDouble(key);
-      final _vaule = _response != 0.0 ? _response : defaultValue as double;
+      final response = _remoteConfig.getDouble(key);
+      final vaule = response != 0.0 ? response : defaultValue as double;
 
-      return Right(_vaule);
+      return Right(vaule);
     } catch (exception) {
       return Left(
         RemoteConfigException(
@@ -115,9 +115,9 @@ class RemoteConfigAdapter implements RemoteConfigClient {
   @override
   Either<RemoteConfigException, dynamic> getValue(String key, defaultValue) {
     try {
-      final _response = _remoteConfig.getValue(key);
+      final response = _remoteConfig.getValue(key);
 
-      return Right(_response);
+      return Right(response);
     } catch (exception) {
       return Left(
         RemoteConfigException(

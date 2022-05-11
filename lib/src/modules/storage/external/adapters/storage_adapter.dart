@@ -17,9 +17,9 @@ class StorageAdapter implements StorageClient {
   @override
   Future<Either<StorageException, bool>> clear() async {
     try {
-      final _response = await _storage.clear();
+      final response = await _storage.clear();
 
-      return Right(_response);
+      return Right(response);
     } catch (exception) {
       return Left(
         StorageException(
@@ -33,9 +33,9 @@ class StorageAdapter implements StorageClient {
   @override
   Either<StorageException, String> get(String key) {
     try {
-      final _response = _storage.getString(key) ?? '';
+      final response = _storage.getString(key) ?? '';
 
-      return Right(_response);
+      return Right(response);
     } catch (exception) {
       return Left(
         StorageException(
@@ -49,9 +49,9 @@ class StorageAdapter implements StorageClient {
   @override
   Future<Either<StorageException, bool>> delete(String key) async {
     try {
-      final _response = await _storage.remove(key);
+      final response = await _storage.remove(key);
 
-      return Right(_response);
+      return Right(response);
     } catch (exception) {
       return Left(
         StorageException(
@@ -69,9 +69,9 @@ class StorageAdapter implements StorageClient {
   }) async {
     try {
       await _storage.remove(key);
-      final _response = await _storage.setString(key, value);
+      final response = await _storage.setString(key, value);
 
-      return Right(_response);
+      return Right(response);
     } catch (exception) {
       return Left(
         StorageException(

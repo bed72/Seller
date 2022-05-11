@@ -31,14 +31,14 @@ class MeBloc extends Bloc<MeEvent, MeState> {
   ) async {
     emit(MeLoadingState());
 
-    final _response = await _meUseCase(event.params).onError(
+    final response = await _meUseCase(event.params).onError(
       (exception, stack) => _crashlyticsUseCase.recordError(
         exception: exception ?? '',
         stack: stack,
       ),
     );
 
-    _response.fold(
+    response.fold(
       (left) => emit(MeFailureState(left.message)),
       (right) => emit(MeSuccessState(right)),
     );

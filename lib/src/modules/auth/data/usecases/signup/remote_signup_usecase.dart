@@ -17,13 +17,13 @@ class RemoteSignUpUseCase extends SignUpUseCase {
   Future<Either<HttpException, SignUpEntity>> call(
     SignUpParams params,
   ) async {
-    final _response = await _call(
+    final response = await _call(
       url: params.url,
       body: params.toJson,
       method: params.httpMethod,
     );
 
-    return _response.either(
+    return response.either(
       (left) => left,
       (right) => SignUpModel.fromJson(right),
     );

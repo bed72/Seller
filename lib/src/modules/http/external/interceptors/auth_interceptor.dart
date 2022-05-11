@@ -39,11 +39,8 @@ class AuthInterceptor extends Interceptor {
     }
   }
 
-  Map<String, String> _addAuthorizationHeader() {
-    final _accessToken = _getAccessToken();
-
-    return <String, String>{'authorization': 'Bearer $_accessToken'};
-  }
+  Map<String, String> _addAuthorizationHeader() =>
+      {'authorization': 'Bearer ${_getAccessToken()}'};
 
   Future<void> _verifyResponse(
     int expiresIn,
@@ -60,9 +57,9 @@ class AuthInterceptor extends Interceptor {
   }
 
   String _getAccessToken() {
-    final _data = _storageUseCase.get(key: AppContants.keyAccessToken);
+    final data = _storageUseCase.get(key: AppContants.keyAccessToken);
 
-    return _data.isRight ? _data.right : '';
+    return data.isRight ? data.right : '';
   }
 
   Future<void> _saveAuthData(String key, String data) async {
