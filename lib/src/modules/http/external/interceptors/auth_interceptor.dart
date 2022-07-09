@@ -7,7 +7,7 @@ import 'package:seller/src/utils/constants/app_constant.dart';
 import 'package:seller/src/modules/storage/domain/usecases/storage_usecase.dart';
 
 class AuthInterceptor extends Interceptor {
-  late final StorageUsecase _storageUseCase;
+  late final StorageUseCase _storageUseCase;
 
   AuthInterceptor(this._storageUseCase);
 
@@ -39,11 +39,8 @@ class AuthInterceptor extends Interceptor {
     }
   }
 
-  Map<String, String> _addAuthorizationHeader() {
-    final _accessToken = _getAccessToken();
-
-    return <String, String>{'authorization': 'Bearer $_accessToken'};
-  }
+  Map<String, String> _addAuthorizationHeader() =>
+      {'authorization': 'Bearer ${_getAccessToken()}'};
 
   Future<void> _verifyResponse(
     int expiresIn,
@@ -59,10 +56,10 @@ class AuthInterceptor extends Interceptor {
     }
   }
 
-  String? _getAccessToken() {
-    final _data = _storageUseCase.get(key: AppContants.keyAccessToken);
+  String _getAccessToken() {
+    final data = _storageUseCase.get(key: AppContants.keyAccessToken);
 
-    return _data.isRight ? _data.right : null;
+    return data.isRight ? data.right : '';
   }
 
   Future<void> _saveAuthData(String key, String data) async {
