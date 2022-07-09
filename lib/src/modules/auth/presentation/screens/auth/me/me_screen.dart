@@ -1,16 +1,14 @@
 import 'package:flutter/material.dart';
 
-import 'package:provider/provider.dart';
-
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:seller/src/utils/constants/app_constant.dart';
 
+import 'package:seller/src/modules/http/domain/params/http_params.dart';
+
 import 'package:seller/src/core/presentation/mixins/state_mixin.dart';
+import 'package:seller/src/core/presentation/extensions/widget_extension.dart';
 
-import 'package:seller/src/modules/http/domain/helpers/http_helper.dart';
-
-import 'package:seller/src/modules/auth/domain/usecases/me/me_usecase.dart';
 import 'package:seller/src/modules/auth/presentation/screens/auth/me/bloc/me_bloc.dart';
 
 class MeScreen extends StatefulWidget {
@@ -21,25 +19,21 @@ class MeScreen extends StatefulWidget {
 }
 
 class _MeScreenState extends State<MeScreen> with StateMixin {
+  late final MeBloc bloc = widget.locator.get<MeBloc>();
+
   @override
   void onCreated() {
-    Provider.of<MeBloc>(context, listen: false).add(
+    bloc.add(
       MeGetAwnerEvent(
-        const MeParams(
+        const HttpParams(
           url: AppContants.urlMe,
-          httpMethod: HttpMethod.get,
         ),
       ),
     );
   }
 
   @override
-  void navigateTo(String? path) {}
-
-  @override
   Widget build(BuildContext context) {
-    final bloc = context.watch<MeBloc>();
-
     return Scaffold(
       appBar: AppBar(
         title: const Text('Me'),
@@ -48,7 +42,6 @@ class _MeScreenState extends State<MeScreen> with StateMixin {
         child: BlocBuilder<MeBloc, MeState>(
           bloc: bloc,
           builder: (_, MeState state) {
-            print('\n\n STATE -> [$state] \n\n');
             if (state is MeLoadingState) {
               return const Center(
                 child: CircularProgressIndicator.adaptive(),

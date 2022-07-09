@@ -1,5 +1,7 @@
 import 'package:seller/src/modules/http/data/clients/http_client.dart';
 
+import 'package:seller/src/modules/http/domain/params/http_params.dart';
+
 import 'package:seller/src/core/domain/entities/exception/exception.dart';
 import 'package:seller/src/core/domain/entities/either/either_entity.dart';
 
@@ -9,18 +11,16 @@ import 'package:seller/src/modules/auth/domain/entities/signup/signup_entity.dar
 import 'package:seller/src/modules/auth/domain/usecases/signup/signup_usecase.dart';
 
 class RemoteSignUpUseCase extends SignUpUseCase {
-  late final HttpClient _call;
+  late final HttpClient _httpClient;
 
-  RemoteSignUpUseCase(this._call);
+  RemoteSignUpUseCase(this._httpClient);
 
   @override
   Future<Either<HttpException, SignUpEntity>> call(
-    SignUpParams params,
+    HttpParams params,
   ) async {
-    final response = await _call(
-      url: params.url,
-      body: params.toJson,
-      method: params.httpMethod,
+    final response = await _httpClient.post(
+      params: params,
     );
 
     return response.either(

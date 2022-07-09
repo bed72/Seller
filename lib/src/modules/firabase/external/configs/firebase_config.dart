@@ -5,13 +5,9 @@ import 'package:flutter/foundation.dart'
 
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 
-import 'package:seller/src/modules/firabase/external/singletons/chashlytics_singleton.dart';
-import 'package:seller/src/modules/firabase/external/singletons/remote_config_singleton.dart';
-
 class FirebaseConfig {
-  static startConfiguration() async {
-    await _startFirebase();
-    _startSingletons();
+  static configurationInitialized() async {
+    await _firebaseInitialized();
 
     FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterError;
   }
@@ -43,15 +39,10 @@ class FirebaseConfig {
   static recordError(Object exception, StackTrace stack) =>
       FirebaseCrashlytics.instance.recordError(exception, stack);
 
-  static _startFirebase() async {
+  static _firebaseInitialized() async {
     await Firebase.initializeApp(
       options: FirebaseConfig.currentPlatform,
     );
-  }
-
-  static _startSingletons() {
-    CrashlyticsSingleton.instance.initialized();
-    RemoteConfigSingleton.instance.initialized();
   }
 
   static const FirebaseOptions android = FirebaseOptions(

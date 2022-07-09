@@ -8,7 +8,7 @@ abstract class MeEvent extends Equatable {
 
 @immutable
 class MeGetAwnerEvent extends MeEvent {
-  late final MeParams params;
+  late final HttpParams params;
 
   MeGetAwnerEvent(this.params);
 

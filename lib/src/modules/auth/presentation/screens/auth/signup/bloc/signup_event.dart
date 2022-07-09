@@ -8,7 +8,7 @@ abstract class SignUpEvent extends Equatable {
 
 @immutable
 class SignUpAwnerEvent extends SignUpEvent {
-  late final SignUpParams params;
+  late final HttpParams params;
 
   SignUpAwnerEvent(this.params);
 

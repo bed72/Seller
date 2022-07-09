@@ -1,27 +1,40 @@
 import 'package:mocktail/mocktail.dart';
+import 'package:seller/src/core/domain/entities/either/either_entity.dart';
+import 'package:seller/src/core/domain/entities/exception/exception.dart';
 
 import 'package:seller/src/modules/http/data/clients/http_client.dart';
 import 'package:seller/src/modules/http/domain/helpers/http_helper.dart';
 
 class HttpClientSpy extends Mock implements HttpClient {
-  late final HttpMethod _method;
-
-  HttpClientSpy({HttpMethod method = HttpMethod.post}) {
-    _method = method;
-  }
-
-  When mockRequestCall() => when(
-        () => call(
-          method: _method,
-          url: any(named: 'url'),
-          body: any(named: 'body'),
-          headers: any(named: 'headers'),
+  When mockGet() => when(
+        () => get(
+          params: any(named: 'params'),
         ),
       );
 
-  void mockRequest(dynamic data) =>
-      mockRequestCall().thenAnswer((_) async => data);
+  void mockRequestGetSuccess(
+    Either<HttpException, Map<String, dynamic>> value,
+  ) =>
+      mockGet().thenAnswer((_) async => value.right);
 
-  void mockRequestError(HttpResponse status) =>
-      mockRequestCall().thenThrow(status);
+  void mockRequestGetError(
+    Either<HttpException, Map<String, dynamic>> value,
+  ) =>
+      mockGet().thenThrow(value.left);
+
+  When mockPost() => when(
+        () => post(
+          params: any(named: 'params'),
+        ),
+      );
+
+  void mockRequestPostSuccess(
+    Either<HttpException, Map<String, dynamic>> value,
+  ) =>
+      mockPost().thenAnswer((_) async => value);
+
+  void mockRequestPostError(
+    Either<HttpException, Map<String, dynamic>> value,
+  ) =>
+      mockPost().thenThrow(value);
 }

@@ -1,17 +1,19 @@
-import 'package:seller/src/modules/http/domain/helpers/http_helper.dart';
+import 'package:seller/src/modules/http/domain/params/http_params.dart';
 
-import 'package:seller/src/modules/auth/domain/usecases/signup/signup_usecase.dart';
-
-class SignUpParamsFake extends SignUpParams {
-  SignUpParamsFake({
-    String url = 'https://address_web.com.br/v1/auth/sign_up',
+class HttpParamsFake extends HttpParams {
+  HttpParamsFake({
     String email = 'email@email.com',
     String password = 'use_secure_password',
-    HttpMethod httpMethod = HttpMethod.post,
+    String url = 'https://address_web.com.br/v1/auth/sign_up',
   }) : super(
+          body: {
+            'email': email,
+            'password': password,
+          },
+          header: {
+            'accept': 'application/json',
+            'content-type': 'application/json',
+          },
           url: url,
-          email: email,
-          password: password,
-          httpMethod: httpMethod,
         );
 }

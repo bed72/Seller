@@ -1,31 +1,15 @@
 enum HttpResponse {
-  ok,
-  success,
-  notFound,
-  forbidden,
-  badRequest,
-  serverError,
-  unauthorized,
-}
+  ok(''),
+  success(''),
+  notFound('httpNotFound'),
+  forbidden('httpForbidden'),
+  badRequest('httpBadRequest'),
+  serverError('httpServerError'),
+  unauthorized('httpUnauthorized');
 
-/// Devolvemos neste caso, a key do arquivo de 'localization'
-extension HttpResponseExtension on HttpResponse {
-  String get value {
-    switch (this) {
-      case HttpResponse.notFound:
-        return 'httpNotFound';
-      case HttpResponse.forbidden:
-        return 'httpForbidden';
-      case HttpResponse.badRequest:
-        return 'httpBadRequest';
-      case HttpResponse.serverError:
-        return 'httpServerError';
-      case HttpResponse.unauthorized:
-        return 'httpUnauthorized';
-      default:
-        return 'httpGeneric';
-    }
-  }
+  final String value;
+
+  const HttpResponse(this.value);
 
   int get code {
     switch (this) {
@@ -50,28 +34,13 @@ extension HttpResponseExtension on HttpResponse {
 }
 
 enum HttpMethod {
-  get,
-  put,
-  post,
-  patch,
-  delete,
-}
+  get('get'),
+  put('put'),
+  post('post'),
+  patch('patch'),
+  delete('delete');
 
-extension HttpMethodExtension on HttpMethod {
-  String get value {
-    switch (this) {
-      case HttpMethod.get:
-        return 'get';
-      case HttpMethod.put:
-        return 'put';
-      case HttpMethod.post:
-        return 'post';
-      case HttpMethod.patch:
-        return 'patch';
-      case HttpMethod.delete:
-        return 'delete';
-      default:
-        return 'get';
-    }
-  }
+  final String value;
+
+  const HttpMethod(this.value);
 }

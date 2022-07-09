@@ -6,6 +6,8 @@ import 'package:equatable/equatable.dart';
 
 import 'package:bloc_concurrency/bloc_concurrency.dart';
 
+import 'package:seller/src/modules/http/domain/params/http_params.dart';
+
 import 'package:seller/src/modules/auth/domain/entities/signup/signup_entity.dart';
 import 'package:seller/src/modules/auth/domain/usecases/signup/signup_usecase.dart';
 
