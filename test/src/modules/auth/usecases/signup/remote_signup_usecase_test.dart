@@ -11,32 +11,30 @@ import 'package:seller/src/modules/auth/domain/entities/signup/signup_entity.dar
 import 'package:seller/src/modules/auth/domain/usecases/signup/signup_usecase.dart';
 import 'package:seller/src/modules/auth/data/usecases/signup/remote_signup_usecase.dart';
 
-import '../../../../http/data/mocks/http_client_spy.dart';
-import '../../../domain/entities/signup/signup_params_fake.dart';
-import '../../../external/mocks/auth/responses/signup/signup_response.dart';
+import 'spy/sign_up_spy.dart';
+import '../../mocks/http_params_fake.dart';
+import '../../mocks/responses/signup_mock_response.dart';
 
 void main() {
   setUpAll(() {
     registerFallbackValue(HttpParamsFake());
   });
 
-  group('Should test SignUp layer', () {
+  group('Should testing SignUp layer with JSON response mode', () {
     late HttpParams params;
-    late HttpClientSpy httpClient;
-    late SignUpUseCase remoteSignUpUseCase;
-    late Either<HttpException, Map<String, dynamic>> apiResult;
+    late SignUpUseCase useCase;
+    late Either<HttpException, Map<String, dynamic>> result;
 
     setUp(() {
       params = HttpParamsFake();
-      apiResult = SignUpResponse.makeJsonSuccess();
-      httpClient = HttpClientSpy()..mockRequestPostSuccess(apiResult);
-      remoteSignUpUseCase = RemoteSignUpUseCase(httpClient);
+      result = SignUpMockResponse.buildJsonSuccess();
+      useCase = RemoteSignUpUseCase(SignUpSpy()..mockSuccess(result));
     });
 
-    test('Should call HttpClient with correct values', () async {
-      final value = await remoteSignUpUseCase(params);
+    test('Should call SignUpUseCase with correct values', () async {
+      final value = await useCase(params);
 
-      verify(() => httpClient.post(params: params)).called(1);
+      verify(() => useCase(params)).called(1);
 
       expect(value.right.runtimeType, SignUpEntity);
       expect(value.right.accessToken.isNotEmpty, true);
