@@ -43,12 +43,14 @@ void main() {
     test('Should call HttpGetUseCase with correct values', () async {
       final value = await httpGetUseCase(params);
 
+      expect(value.right.length, 1);
       expect(value.right.isEmpty, false);
     });
 
     test('Should call HttpPostUseCase with correct values', () async {
       final value = await httPostUseCase(params);
 
+      expect(value.right.length, 1);
       expect(value.right.isEmpty, false);
     });
   });
