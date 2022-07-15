@@ -12,5 +12,5 @@ class SignUpSpy extends Mock implements HttpClient {
       mockSigUp().thenAnswer((_) async => value);
 
   void mockError(Either<HttpException, Map<String, dynamic>> value) =>
-      mockSigUp().thenThrow(value);
+      mockSigUp().thenAnswer((_) async => value);
 }

@@ -16,11 +16,11 @@ import 'package:seller/src/modules/firabase/domain/usecases/crashlytics_usecase.
 part 'signup_event.dart';
 part 'signup_state.dart';
 
-class SignupBloc extends Bloc<SignUpEvent, SignUpState> {
+class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
   late final SignUpUseCase _signUpUseCase;
   late final CrashlyticsUseCase _crashlyticsUseCase;
 
-  SignupBloc(
+  SignUpBloc(
     this._signUpUseCase,
     this._crashlyticsUseCase,
   ) : super(SignUpInitialState()) {
