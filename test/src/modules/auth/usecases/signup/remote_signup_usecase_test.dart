@@ -12,14 +12,14 @@ import 'package:seller/src/modules/auth/domain/entities/signup/signup_entity.dar
 import 'package:seller/src/modules/auth/domain/usecases/signup/signup_usecase.dart';
 import 'package:seller/src/modules/auth/data/usecases/signup/remote_signup_usecase.dart';
 
-import 'spy/sign_up_spy.dart';
+import 'spy/sign_up_usecase_spy.dart';
 import '../../mocks/http_params_fake.dart';
 import '../../mocks/responses/signup_mock_response.dart';
 
 void main() {
-  late HttpParams params;
-  late SignUpUseCase useCase;
-  late Either<HttpException, Map<String, dynamic>> result;
+  late final HttpParams params;
+  late final SignUpUseCase useCase;
+  late final Either<HttpException, Map<String, dynamic>> result;
 
   setUpAll(() {
     params = HttpParamsFake();
@@ -30,7 +30,7 @@ void main() {
   group('Should testing SignUp layer with JSON response success Right', () {
     setUp(() {
       result = SignUpMockResponse.buildJsonSuccess();
-      useCase = RemoteSignUpUseCase(SignUpSpy()..mockSuccess(result));
+      useCase = RemoteSignUpUseCase(SignUpUseCaseSpy()..mockSuccess(result));
     });
 
     test('Should call SignUpUseCase with correct values', () async {
@@ -44,7 +44,7 @@ void main() {
   group('Should testing SignUp layer with JSON response failure Left', () {
     setUp(() {
       result = SignUpMockResponse.buildJsonFailure();
-      useCase = RemoteSignUpUseCase(SignUpSpy()..mockError(result));
+      useCase = RemoteSignUpUseCase(SignUpUseCaseSpy()..mockFailure(result));
     });
 
     test('Should call SignUpUseCase with correct values', () async {
