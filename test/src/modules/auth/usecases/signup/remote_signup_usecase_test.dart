@@ -1,6 +1,7 @@
 import 'package:mocktail/mocktail.dart';
 
 import 'package:flutter_test/flutter_test.dart';
+import 'package:seller/src/modules/http/domain/helpers/http_helper.dart';
 
 import 'package:seller/src/modules/http/domain/params/http_params.dart';
 
@@ -16,17 +17,18 @@ import '../../mocks/http_params_fake.dart';
 import '../../mocks/responses/signup_mock_response.dart';
 
 void main() {
+  late HttpParams params;
+  late SignUpUseCase useCase;
+  late Either<HttpException, Map<String, dynamic>> result;
+
   setUpAll(() {
+    params = HttpParamsFake();
+
     registerFallbackValue(HttpParamsFake());
   });
 
-  group('Should testing SignUp layer with JSON response mode', () {
-    late HttpParams params;
-    late SignUpUseCase useCase;
-    late Either<HttpException, Map<String, dynamic>> result;
-
+  group('Should testing SignUp layer with JSON response success Right', () {
     setUp(() {
-      params = HttpParamsFake();
       result = SignUpMockResponse.buildJsonSuccess();
       useCase = RemoteSignUpUseCase(SignUpSpy()..mockSuccess(result));
     });
@@ -34,10 +36,23 @@ void main() {
     test('Should call SignUpUseCase with correct values', () async {
       final value = await useCase(params);
 
-      verify(() => useCase(params)).called(1);
-
-      expect(value.right.runtimeType, SignUpEntity);
+      expect(value.right, isA<SignUpEntity>());
       expect(value.right.accessToken.isNotEmpty, true);
+    });
+  });
+
+  group('Should testing SignUp layer with JSON response failure Left', () {
+    setUp(() {
+      result = SignUpMockResponse.buildJsonFailure();
+      useCase = RemoteSignUpUseCase(SignUpSpy()..mockError(result));
+    });
+
+    test('Should call SignUpUseCase with correct values', () async {
+      final value = await useCase(params);
+
+      expect(value.left, isA<HttpException>());
+      expect(value.left.code, HttpResponse.serverError);
+      expect(value.left.message, HttpResponse.serverError.value);
     });
   });
 }

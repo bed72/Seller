@@ -16,12 +16,8 @@ class RemoteSignUpUseCase extends SignUpUseCase {
   RemoteSignUpUseCase(this._httpClient);
 
   @override
-  Future<Either<HttpException, SignUpEntity>> call(
-    HttpParams params,
-  ) async {
-    final response = await _httpClient.post(
-      params: params,
-    );
+  Future<Either<HttpException, SignUpEntity>> call(HttpParams params) async {
+    final response = await _httpClient.post(params: params);
 
     return response.either(
       (left) => left,

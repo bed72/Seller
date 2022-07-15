@@ -34,17 +34,17 @@ class SignUpScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final bloc = locator.get<SignupBloc>();
+    final bloc = locator.get<SignUpBloc>();
 
     return Scaffold(
-      body: BlocListener<SignupBloc, SignUpState>(
+      body: BlocListener<SignUpBloc, SignUpState>(
         bloc: bloc,
         listener: (_, SignUpState state) {
           if (state is SignUpSuccessState) {
             _navigateTo(AuthRoutes.pathMe, context);
           }
         },
-        child: BlocBuilder<SignupBloc, SignUpState>(
+        child: BlocBuilder<SignUpBloc, SignUpState>(
           bloc: bloc,
           builder: (_, SignUpState state) {
             if (state is SignUpLoadingState) {

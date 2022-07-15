@@ -29,8 +29,8 @@ class AuthModule implements Module {
           locator.get<HttpClient>(),
         ),
       )
-      ..registerFactory<SignupBloc>(
-        () => SignupBloc(
+      ..registerFactory<SignUpBloc>(
+        () => SignUpBloc(
           locator.get<SignUpUseCase>(),
           locator.get<CrashlyticsUseCase>(),
         ),
